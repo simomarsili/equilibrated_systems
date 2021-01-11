@@ -20,6 +20,8 @@ container = Path('frames/trj.nc')  # trajectory filepath
 
 if __name__ == '__main__':
 
+    burnin_iterations += 1  # discard starting configuration from trajectory
+
     # initialize sampler
     sampler = DefaultSampler(number_of_iterations=n_iterations,
                              mcmc_moves=propagator(timestep=timestep,
