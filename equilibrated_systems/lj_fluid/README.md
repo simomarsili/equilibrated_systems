@@ -2,3 +2,9 @@
 
 Equilibration: 10 ps
 Production: 100 ps
+
+Resample with:
+
+```
+python sampler.py
+```
