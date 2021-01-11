@@ -11,7 +11,7 @@ from TestPipelines.utils import generate_gromacs_input
 
 test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
-n_iterations = 20  # total number of sampler iterations (state updates)
+n_iterations = 110  # total number of sampler iterations (state updates)
 burnin_iterations = 10  # number of burnin iterations (#iterations)
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
