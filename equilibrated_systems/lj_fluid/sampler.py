@@ -6,15 +6,15 @@ from pathlib import Path
 
 from mmlite.systems import LennardJonesFluid
 from simtk import unit
-from TestPipelines.sampler import DefaultSampler, propagator
+from TestPipelines.sampler import SAMSSampler, propagator
 from TestPipelines.utils import generate_gromacs_input
 
 test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
 pressure = None
 # pressure = 298 * unit.atmosphere
-n_iterations = 110  # total number of sampler iterations (state updates)
-burnin_iterations = 10  # number of burnin iterations (#iterations)
+production_iterations = 100  # total number of sampler iterations (state updates)
+burnin_iterations = 100  # number of burnin iterations (#iterations)
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
 checkpoint_iterations = 1  # checkpoint_interval (#iterations)
@@ -22,12 +22,14 @@ container = Path('frames/trj.nc')  # trajectory filepath
 
 if __name__ == '__main__':
 
+    n_iterations = production_iterations + burnin_iterations
+
     burnin_iterations += 1  # discard starting configuration from trajectory
 
     # initialize sampler
-    sampler = DefaultSampler(number_of_iterations=n_iterations,
-                             mcmc_moves=propagator(timestep=timestep,
-                                                   n_steps=state_update_steps))
+    sampler = SAMSSampler(number_of_iterations=n_iterations,
+                          mcmc_moves=propagator(timestep=timestep,
+                                                n_steps=state_update_steps))
 
     start_frame = ceil(burnin_iterations / checkpoint_iterations)
 
