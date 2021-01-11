@@ -13,11 +13,11 @@ test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
 pressure = None
 # pressure = 298 * unit.atmosphere
-production_iterations = 100  # total number of sampler iterations (state updates)
+production_iterations = 1000  # total number of sampler iterations (state updates)
 burnin_iterations = 100  # number of burnin iterations (#iterations)
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
-checkpoint_iterations = 1  # checkpoint_interval (#iterations)
+checkpoint_iterations = 10  # checkpoint_interval (#iterations)
 container = Path('frames/trj.nc')  # trajectory filepath
 
 if __name__ == '__main__':
@@ -29,7 +29,8 @@ if __name__ == '__main__':
     # initialize sampler
     sampler = SAMSSampler(number_of_iterations=n_iterations,
                           mcmc_moves=propagator(timestep=timestep,
-                                                n_steps=state_update_steps))
+                                                n_steps=state_update_steps),
+                          online_analysis_interval=None)
 
     start_frame = ceil(burnin_iterations / checkpoint_iterations)
 
