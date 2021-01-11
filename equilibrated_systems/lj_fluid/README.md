@@ -8,3 +8,9 @@ Resample with:
 ```
 python sampler.py
 ```
+
+Run a test gromacs run with:
+
+```
+bash run_gromacs.bash
+```
