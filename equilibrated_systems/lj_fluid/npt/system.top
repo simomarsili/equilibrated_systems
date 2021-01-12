@@ -1,0 +1,52 @@
+;
+;   File /media/data/scr/equilibrated_systems/equilibrated_systems/lj_fluid/frames/system.top  was generated
+;   By user: simo (1000)
+;   On host: durruti
+;   At date: Tue. January  2 18:59:38 2021
+;
+;   This is a standalone topology file
+;
+;   Created by:
+;   ParmEd:       sampler.py, VERSION 3.2.0
+;   Executable:   sampler.py
+;   Library dir:  /usr/local/gromacs/share/gromacs/top
+;   Command line:
+;     sampler.py
+;
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               2               yes             1            1
+
+[ atomtypes ]
+; name    at.num    mass    charge ptype  sigma      epsilon
+Ar1           18  39.948100  0.00000000  A           0.34       0.995792
+
+
+[ moleculetype ]
+; Name            nrexcl
+Alc          3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr    charge       mass  typeB    chargeB      massB
+; residue    1 Alc rtp Alc q 0.0
+    1        Ar1      1    Alc     Ar      1 0.00000000  39.948100   ; qtot 0.000000
+
+
+[ moleculetype ]
+; Name            nrexcl
+Ar          3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr    charge       mass  typeB    chargeB      massB
+; residue    1 Ar rtp Ar q 0.0
+    1        Ar1      1     Ar     Ar      1 0.00000000  39.948100   ; qtot 0.000000
+
+[ system ]
+; Name
+Generic title
+
+[ molecules ]
+; Compound       #mols
+Alc                  1
+Ar                  99
