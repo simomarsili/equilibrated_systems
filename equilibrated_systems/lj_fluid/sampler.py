@@ -4,10 +4,10 @@
 from math import ceil
 from pathlib import Path
 
+from mmlite.gromacs import generate_gromacs_input
+from mmlite.multistate import SAMSSampler, propagator
 from mmlite.systems import LennardJonesFluid
 from simtk import unit
-from TestPipelines.sampler import SAMSSampler, propagator
-from TestPipelines.utils import generate_gromacs_input
 
 test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
