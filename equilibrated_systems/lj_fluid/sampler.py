@@ -58,4 +58,4 @@ if __name__ == '__main__':
 
     # start_frame = 10
     # create gromacs .top and .gro files in the target directory
-    generate_gromacs_input(container, sampler.topology, sampler.ref_system)
+    generate_gromacs_input(container, sampler)
