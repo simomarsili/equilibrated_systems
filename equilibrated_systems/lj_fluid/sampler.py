@@ -11,7 +11,7 @@ from TestPipelines.utils import generate_gromacs_input
 
 test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
-pressure = None
+pressure = 1.0 * unit.atmosphere
 # pressure = 298 * unit.atmosphere
 production_iterations = 1000  # total number of sampler iterations (state updates)
 burnin_iterations = 100  # number of burnin iterations (#iterations)
