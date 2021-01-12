@@ -54,11 +54,8 @@ if __name__ == '__main__':
     sampler.run()
 
     # save the sampled configurations at the target thermodynamic state
-    sampler.demux(0, to_file=container)
+    sampler.demux(0, to_file=container, start_frame=start_frame)
 
     # start_frame = 10
     # create gromacs .top and .gro files in the target directory
-    generate_gromacs_input(container,
-                           sampler.topology,
-                           sampler.ref_system,
-                           start_frame=start_frame)
+    generate_gromacs_input(container, sampler.topology, sampler.ref_system)
