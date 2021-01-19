@@ -13,8 +13,7 @@ from simtk import unit
 test = LennardJonesFluid(nparticles=100, reduced_density=0.01)  # test system
 temperatures = 298 * unit.kelvin
 pressure = 1.0 * unit.atmosphere
-# production_iterations = 1000  # total number of sampler iterations (state updates)
-production_iterations = 100  # total number of sampler iterations (state updates)
+production_iterations = 1000  # total number of sampler iterations (state updates)
 burnin_iterations = 100  # number of burnin iterations (#iterations)
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
