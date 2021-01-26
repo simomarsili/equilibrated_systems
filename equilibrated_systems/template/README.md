@@ -2,7 +2,7 @@ Setup a simulation modifying `app.py`
 
 Run/restart the simulation with
 ```
-python run.py
+python run.py [-n <#iterations>]
 
 ```
 
