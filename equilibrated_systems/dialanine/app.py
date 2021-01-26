@@ -18,7 +18,6 @@ temperatures = list(np.logspace(np.log10(298), np.log10(600), num=4))
 # temperatures = 298 * unit.kelvin
 # pressure = 1.0 * unit.atmosphere
 pressure = None
-production_iterations = 1000  # total number of sampler iterations
 burnin_iterations = 1000  # number of burnin iterations (#iterations)
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
@@ -36,9 +35,7 @@ def initialize_sampler():
     """Initialize a multistate sampler."""
 
     # initialize sampler
-    n_iterations = production_iterations + burnin_iterations
-
-    smp = SAMSSampler(number_of_iterations=n_iterations,
+    smp = SAMSSampler(number_of_iterations=burnin_iterations,
                       mcmc_moves=propagator(timestep=timestep,
                                             n_steps=state_update_steps),
                       online_analysis_interval=None)
