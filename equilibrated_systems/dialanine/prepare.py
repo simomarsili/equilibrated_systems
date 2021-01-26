@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Prepare input for alchemical transformations."""
+import logging
 from math import ceil
 from pathlib import Path
 
@@ -7,8 +8,13 @@ from mmdemux import extract_trajectory
 from mmlite.gromacs import generate_gromacs_input
 from mmlite.utils import multistate_reporter_metadata
 
-burnin_iterations = 1  # number of burnin iterations (#iterations)
-checkpoint_iterations = 1  # checkpoint_interval (#iterations)
+verbose_module = 'openmmtools.multistate'
+
+if verbose_module:
+    logging.getLogger(verbose_module).setLevel(logging.DEBUG)
+
+burnin_iterations = 1000  # number of burnin iterations (#iterations)
+checkpoint_iterations = 10  # checkpoint_interval (#iterations)
 
 ref_state_index = 0
 
