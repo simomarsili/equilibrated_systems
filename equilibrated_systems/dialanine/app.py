@@ -18,9 +18,13 @@ temperatures = list(np.logspace(np.log10(298), np.log10(600), num=4))
 # temperatures = 298 * unit.kelvin
 # pressure = 1.0 * unit.atmosphere
 pressure = None
-burnin_iterations = 1000  # number of burnin iterations (#iterations)
+
+# timesteps
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
+
+# iterations
+burnin_iterations = 1000  # number of burnin iterations (#iterations)
 checkpoint_iterations = 10  # checkpoint_interval (#iterations)
 
 ms_container = Path('frames/trj.nc')  # trajectory filepath
