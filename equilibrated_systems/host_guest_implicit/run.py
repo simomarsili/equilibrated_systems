@@ -6,12 +6,13 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import app
 
-from equilibrated_systems.utils import initialize_sampler
-
-if app.prms.verbose_module:
-    logging.getLogger(app.prms.verbose_module).setLevel(logging.DEBUG)
+from equilibrated_systems.utils import get_variables, initialize_sampler
 
 N_ITERATIONS = 1000  # default
+prms = get_variables(app)
+
+if prms.verbose_module:
+    logging.getLogger(prms.verbose_module).setLevel(logging.DEBUG)
 
 
 def parse_command_line_args():
@@ -24,10 +25,10 @@ def parse_command_line_args():
 
 if __name__ == '__main__':
     try:
-        sampler = app.prms.sampler_class.from_storage(
-            storage=str(app.prms.ms_container))
+        sampler = prms.sampler_class.from_storage(
+            storage=str(prms.ms_container))
     except FileNotFoundError:
-        sampler = initialize_sampler(app.prms)
+        sampler = initialize_sampler(prms)
 
     args = parse_command_line_args()
     n_iterations = args['n_iterations']

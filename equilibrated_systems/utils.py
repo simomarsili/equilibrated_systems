@@ -2,6 +2,8 @@
 """Setup simulation parameters."""
 # pylint: disable=no-member
 
+from types import SimpleNamespace
+
 from mmdemux import extract_trajectory
 from mmlite.multistate import propagator
 
@@ -11,7 +13,7 @@ def initialize_sampler(prms):
 
     Parameters
     ----------
-    prms : SimpleNameSpace
+    prms : SimpleNamespace
 
     Returns
     -------
@@ -46,3 +48,12 @@ def extract(ms, target, state_index=0, discard=0):
                              state_index=state_index,
                              start_frame=discard)
     return trj
+
+
+def get_variables(m):
+    """
+    Return a namespace of variables defined in module `m`.
+
+    """
+    vrs = {k: v for k, v in m.__dict__.items() if not k.startswith('__')}
+    return SimpleNamespace(**vrs)
