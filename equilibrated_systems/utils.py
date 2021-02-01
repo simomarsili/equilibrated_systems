@@ -30,7 +30,7 @@ def initialize_sampler(prms):
 
     # set sampler states and positions
     smp.from_testsystem(prms.test,
-                        temperatures=prms.temperatures,
+                        thermodynamic_states=prms.temperatures,
                         pressure=prms.pressure,
                         stride=prms.checkpoint_iterations,
                         storage=prms.ms_container)
