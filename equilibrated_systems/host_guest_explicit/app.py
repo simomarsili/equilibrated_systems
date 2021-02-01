@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup simulation parameters."""
 # pylint: disable=no-member
-from math import ceil
 from pathlib import Path
 
 import numpy as np
@@ -12,7 +11,7 @@ from simtk import unit
 
 test = systems.HostGuestExplicit()  # test system
 ref_state_index = 0
-temperatures = list(np.logspace(np.log10(298), np.log10(600), num=20))
+temperatures = list(np.logspace(np.log10(298), np.log10(600), num=2))
 # temperatures = 298 * unit.kelvin
 pressure = 1.0 * unit.atmosphere
 # pressure = None
@@ -22,7 +21,7 @@ timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
 
 # iterations
-checkpoint_iterations = 10  # checkpoint_interval (#iterations)
+checkpoint_iterations = 1  # checkpoint_interval (#iterations)
 
 ms_container = Path('frames/trj.nc')  # trajectory filepath
 
@@ -55,10 +54,8 @@ def initialize_sampler():
 def extract(ms, target, state_index=0, discard=0):
     """Extract configurations at the target thermodynamic state."""
     # discard starting configuration from trajectory
-    discard += 1
-    start_frame = ceil(discard / checkpoint_iterations)
     trj = extract_trajectory(nc_path=str(ms),
                              to_file=str(target),
                              state_index=state_index,
-                             start_frame=start_frame)
+                             start_frame=discard)
     return trj

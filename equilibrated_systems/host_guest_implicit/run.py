@@ -6,8 +6,10 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import app
 
-if app.verbose_module:
-    logging.getLogger(app.verbose_module).setLevel(logging.DEBUG)
+from equilibrated_systems.utils import initialize_sampler
+
+if app.prms.verbose_module:
+    logging.getLogger(app.prms.verbose_module).setLevel(logging.DEBUG)
 
 N_ITERATIONS = 1000  # default
 
@@ -22,9 +24,10 @@ def parse_command_line_args():
 
 if __name__ == '__main__':
     try:
-        sampler = app.sampler_class.from_storage(storage=str(app.ms_container))
+        sampler = app.prms.sampler_class.from_storage(
+            storage=str(app.prms.ms_container))
     except FileNotFoundError:
-        sampler = app.initialize_sampler()
+        sampler = initialize_sampler(app.prms)
 
     args = parse_command_line_args()
     n_iterations = args['n_iterations']

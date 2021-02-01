@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Prepare input for alchemical transformations."""
+# pylint: disable=no-member
 import logging
 from pathlib import Path
 
@@ -10,7 +11,7 @@ from mmlite.utils import multistate_reporter_metadata
 if app.verbose_module:
     logging.getLogger(app.verbose_module).setLevel(logging.DEBUG)
 
-burnin_iterations = 100  # number of burnin iterations (#iterations)
+burnin_iterations = 0  # number of burnin iterations (#iterations)
 target_container = Path('frames/trj.0.pdb')  # trajectory filepath
 
 
