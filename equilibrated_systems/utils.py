@@ -2,6 +2,7 @@
 """Setup simulation parameters."""
 # pylint: disable=no-member
 
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from types import SimpleNamespace
 
 from mmdemux import extract_trajectory
@@ -35,7 +36,7 @@ def initialize_sampler(prms):
                         stride=prms.checkpoint_iterations,
                         storage=prms.ms_container)
 
-    smp.run()
+    smp.minimize()
 
     return smp
 
@@ -57,3 +58,14 @@ def get_variables(m):
     """
     vrs = {k: v for k, v in m.__dict__.items() if not k.startswith('__')}
     return SimpleNamespace(**vrs)
+
+
+def parse_command_line_args():
+    """Parse command line options."""
+    parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
+                            description=__doc__)
+    parser.add_argument('-n', '--n_iterations', type=int, default=100)
+    parser.add_argument('--mix', dest='mix', action='store_true')
+    parser.add_argument('--no-mix', dest='mix', action='store_false')
+    parser.set_defaults(mix=True)
+    return vars(parser.parse_args())
