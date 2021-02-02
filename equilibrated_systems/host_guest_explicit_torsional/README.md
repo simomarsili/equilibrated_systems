@@ -1,13 +1,8 @@
 Setup a simulation modifying `app.py`
 
-Equilibrate the system
+Equilibrate and run the simulation with
 ```
-python run.py -n 10 --no-mix
-```
-
-Run/restart the simulation with
-```
-python run.py -n 1000
+python run.py -e 10 -n 1000
 
 ```
 

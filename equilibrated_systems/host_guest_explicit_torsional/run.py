@@ -22,9 +22,8 @@ if __name__ == '__main__':
 
     args = parse_command_line_args()
     n_iterations = args['n_iterations']
-    mix = args['mix']
-
-    if mix:
+    n_equilibration = args['equilibration']
+    if n_equilibration > 0:
+        sampler.equilibrate(n_equilibration)
+    if n_iterations > 0:
         sampler.extend(n_iterations)
-    else:
-        sampler.equilibrate(n_iterations)

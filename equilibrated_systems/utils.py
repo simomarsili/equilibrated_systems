@@ -65,7 +65,5 @@ def parse_command_line_args():
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter,
                             description=__doc__)
     parser.add_argument('-n', '--n_iterations', type=int, default=100)
-    parser.add_argument('--mix', dest='mix', action='store_true')
-    parser.add_argument('--no-mix', dest='mix', action='store_false')
-    parser.set_defaults(mix=True)
+    parser.add_argument('-e', '--equilibration', type=int, default=0)
     return vars(parser.parse_args())
