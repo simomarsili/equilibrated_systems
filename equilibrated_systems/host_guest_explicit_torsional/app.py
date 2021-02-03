@@ -12,17 +12,17 @@ from simtk import unit
 
 test = systems.HostGuestExplicit()  # test system
 temperature = 298 * unit.kelvin
-pressure = None
+pressure = 1.0 * unit.atmosphere
 
-# sampler_class = SAMSSampler
 sampler_class = ReplicaExchangeSampler
 timestep = 1.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
-checkpoint_iterations = 1  # checkpoint_interval (#iterations)
+checkpoint_iterations = 10  # checkpoint_interval (#iterations)
 
-factors = list(np.logspace(0, -1, 4))
-protocol = dict(lambda_torsions=factors)
-ref_state_index = 0
+protocol = dict(  # define the scaling protocol as a dict
+    lambda_torsions=list(np.logspace(0, -1, 4)))
+ref_state_index = 0  # the index of the target thermodynamic state
+
 reference_thermodynamic_state = mmtools.states.ThermodynamicState(
     system=test.system, temperature=temperature, pressure=pressure)
 thermodynamic_states = create_compound_states(reference_thermodynamic_state,
