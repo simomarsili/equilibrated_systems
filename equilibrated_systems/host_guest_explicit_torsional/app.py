@@ -15,7 +15,7 @@ temperature = 298 * unit.kelvin
 pressure = 1.0 * unit.atmosphere
 
 sampler_class = ReplicaExchangeSampler
-timestep = 1.0 * unit.femtoseconds
+timestep = 2.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
 checkpoint_iterations = 10  # checkpoint_interval (#iterations)
 
