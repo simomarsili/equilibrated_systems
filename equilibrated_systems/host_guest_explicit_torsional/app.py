@@ -29,6 +29,7 @@ thermodynamic_states = create_compound_states(reference_thermodynamic_state,
                                               test.topology,
                                               protocol,
                                               region='default')
+metadata = create_compound_states.metadata
 
 ms_container = Path('frames/trj.nc')  # trajectory filepath
 verbose_module = 'openmmtools.multistate'
