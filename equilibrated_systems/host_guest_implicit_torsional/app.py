@@ -17,7 +17,7 @@ pressure = None
 sampler_class = ReplicaExchangeSampler
 timestep = 2.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
-checkpoint_iterations = 10  # checkpoint_interval (#iterations)
+checkpoint_iterations = 1  # checkpoint_interval (#iterations)
 
 protocol = dict(  # define the scaling protocol as a dict
     lambda_torsions=list(np.logspace(0, -1, 4)))
