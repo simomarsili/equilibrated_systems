@@ -29,6 +29,7 @@ if __name__ == '__main__':
             storage=str(prms.ms_container))
     except FileNotFoundError:
         sampler = initialize_sampler(prms)
+        sampler.metadata.update(app.metadata)
 
     args = parse_command_line_args()
     n_iterations = args['n_iterations']
