@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Template package file"""
 __title__ = 'equilbrated_systems'
-__version__ = '0.2.14'
+__version__ = '0.2.15'
 __author__ = 'Simone Marsili'
 __summary__ = ''
 __url__ = 'https://github.com/simomarsili/template_project'
