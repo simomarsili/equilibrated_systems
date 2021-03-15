@@ -3,7 +3,7 @@ Setup a simulation modifying `app.py`
 Equilibrate and run the simulation with
 
 ```
-python run.py -e 10 -n 1000
+python app.py -e 10 -n 1000
 
 ```
 
