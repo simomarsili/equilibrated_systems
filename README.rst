@@ -1,8 +1,8 @@
 Equilbrated molecular systems
 =============================
 
-working systems:
+Updated systems:
 
-host_guest_implicit
-
-host_guest_explicit
+* [dialanine_implicit_torsional](<https://github.com/simomarsili/equilibrated_systems/blob/master/equilibrated_systems/dialanine_implicit_torsional>)
+* [host_guest_implicit_torsional](<https://github.com/simomarsili/equilibrated_systems/blob/master/equilibrated_systems/host_guest_implicit_torsional>)
+* [host_guest_explicit_torsional](<https://github.com/simomarsili/equilibrated_systems/blob/master/equilibrated_systems/host_guest_explicit_torsional>)
