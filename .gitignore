@@ -104,3 +104,7 @@ cookiecutter-pypackage-env/
 # local virtual environment
 ve
 .venv
+
+# stuff
+*.ipynb
+**/frames/
