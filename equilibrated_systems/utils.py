@@ -9,12 +9,27 @@ from mmdemux import extract_trajectory
 from mmlite.multistate import propagator
 
 
-def initialize_sampler(prms):
+def initialize_sampler(  # pylint: disable=too-many-arguments
+        test, sampler_class, timestep, state_update_steps,
+        thermodynamic_states, pressure, checkpoint_iterations, ms_container):
     """Initialize a multistate sampler.
 
     Parameters
     ----------
-    prms : SimpleNamespace
+    test : TestSystem object
+    sampler_class : MultiStateSampler-derived class
+    timestep : Quantity
+        Simulation timestep
+    state_update_steps : int
+        Len of an iteration (in time steps).
+        States are updated at each iteration.
+    thermodynamic_states
+    pressure : Quantity or None
+    checkpoint_iterations : int
+        Stride for checkpoint print (in iterations)
+    ms_container : pathlib.Path
+        Path to multistate trajectory container
+
 
     Returns
     -------
@@ -23,18 +38,17 @@ def initialize_sampler(prms):
     """
 
     # initialize sampler
-    smp = prms.sampler_class(number_of_iterations=0,
-                             mcmc_moves=propagator(
-                                 timestep=prms.timestep,
-                                 n_steps=prms.state_update_steps),
-                             online_analysis_interval=None)
+    smp = sampler_class(number_of_iterations=0,
+                        mcmc_moves=propagator(timestep=timestep,
+                                              n_steps=state_update_steps),
+                        online_analysis_interval=None)
 
     # set sampler states and positions
-    smp.from_testsystem(prms.test,
-                        thermodynamic_states=prms.thermodynamic_states,
-                        pressure=prms.pressure,
-                        stride=prms.checkpoint_iterations,
-                        storage=prms.ms_container)
+    smp.from_testsystem(test,
+                        thermodynamic_states=thermodynamic_states,
+                        pressure=pressure,
+                        stride=checkpoint_iterations,
+                        storage=ms_container)
 
     smp.minimize()
 
