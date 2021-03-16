@@ -10,7 +10,7 @@ from mmlite.multistate import propagator
 
 
 def initialize_sampler(  # pylint: disable=too-many-arguments
-        test, sampler_class, timestep, state_update_steps,
+        test, sampler_class, timestep, state_update_steps, reference_state,
         thermodynamic_states, pressure, checkpoint_iterations, ms_container):
     """Initialize a multistate sampler.
 
@@ -23,6 +23,7 @@ def initialize_sampler(  # pylint: disable=too-many-arguments
     state_update_steps : int
         Len of an iteration (in time steps).
         States are updated at each iteration.
+    reference_state
     thermodynamic_states
     pressure : Quantity or None
     checkpoint_iterations : int
@@ -45,6 +46,7 @@ def initialize_sampler(  # pylint: disable=too-many-arguments
 
     # set sampler states and positions
     smp.from_testsystem(test,
+                        reference_state=reference_state,
                         thermodynamic_states=thermodynamic_states,
                         pressure=pressure,
                         stride=checkpoint_iterations,

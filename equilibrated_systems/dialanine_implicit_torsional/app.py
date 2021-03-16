@@ -48,9 +48,10 @@ if __name__ == '__main__':
         # sampler = initialize_sampler(prms)
 
         sampler = initialize_sampler(test, sampler_class, timestep,
-                                     state_update_steps, thermodynamic_states,
-                                     pressure, checkpoint_iterations,
-                                     ms_container)
+                                     state_update_steps,
+                                     reference_thermodynamic_state,
+                                     thermodynamic_states, pressure,
+                                     checkpoint_iterations, ms_container)
         sampler.metadata.update(metadata)
 
     args = parse_command_line_args()
