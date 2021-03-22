@@ -9,9 +9,42 @@ from mmdemux import extract_trajectory
 from mmlite.multistate import propagator
 
 
-def initialize_sampler(  # pylint: disable=too-many-arguments
-        test, sampler_class, timestep, state_update_steps, reference_state,
-        thermodynamic_states, pressure, checkpoint_iterations, ms_container):
+def run(args, parameters):
+    """Run/extend a multistate simulation."""
+
+    try:
+        sampler = parameters['sampler_class'].from_storage(
+            storage=str(parameters['ms_container']))
+    except FileNotFoundError:
+        sampler = initialize_sampler(**parameters)
+        sampler.metadata.update(parameters['metadata'])
+
+    n_iterations = args['n_iterations']
+    n_equilibration = args['equilibration']
+    if n_equilibration > 0:
+        sampler.equilibrate(n_equilibration)
+    if n_iterations > 0:
+        sampler.extend(n_iterations)
+
+
+def parse_parameters(a):
+    """Filter/check params from dict."""
+    mandatory_parameters = (
+        'test temperature pressure '
+        'sampler_class timestep state_update_steps checkpoint_iterations '
+        'reference_thermodynamic_state thermodynamic_states '
+        'metadata ms_container').split()
+
+    prms = {}
+    for p in mandatory_parameters:
+        try:
+            prms[p] = a.pop(p)
+        except KeyError as e:
+            raise ValueError('Need a value for %s' % p) from e
+    return prms
+
+
+def initialize_sampler(**kwargs):
     """Initialize a multistate sampler.
 
     Parameters
@@ -23,7 +56,7 @@ def initialize_sampler(  # pylint: disable=too-many-arguments
     state_update_steps : int
         Len of an iteration (in time steps).
         States are updated at each iteration.
-    reference_state
+    reference_thermodynamic_state
     thermodynamic_states
     pressure : Quantity or None
     checkpoint_iterations : int
@@ -38,19 +71,22 @@ def initialize_sampler(  # pylint: disable=too-many-arguments
 
     """
 
+    prms = SimpleNamespace(**kwargs)
+
     # initialize sampler
-    smp = sampler_class(number_of_iterations=0,
-                        mcmc_moves=propagator(timestep=timestep,
-                                              n_steps=state_update_steps),
-                        online_analysis_interval=None)
+    smp = prms.sampler_class(number_of_iterations=0,
+                             mcmc_moves=propagator(
+                                 timestep=prms.timestep,
+                                 n_steps=prms.state_update_steps),
+                             online_analysis_interval=None)
 
     # set sampler states and positions
-    smp.from_testsystem(test,
-                        reference_state=reference_state,
-                        thermodynamic_states=thermodynamic_states,
-                        pressure=pressure,
-                        stride=checkpoint_iterations,
-                        storage=ms_container)
+    smp.from_testsystem(prms.test,
+                        reference_state=prms.reference_thermodynamic_state,
+                        thermodynamic_states=prms.thermodynamic_states,
+                        pressure=prms.pressure,
+                        stride=prms.checkpoint_iterations,
+                        storage=prms.ms_container)
 
     smp.minimize()
 

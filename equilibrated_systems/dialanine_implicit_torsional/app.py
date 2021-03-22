@@ -11,8 +11,8 @@ from mmlite import systems
 from mmlite.multistate import ReplicaExchangeSampler, create_compound_states
 from simtk import unit
 
-from equilibrated_systems.utils import (initialize_sampler,
-                                        parse_command_line_args)
+from equilibrated_systems.utils import (parse_command_line_args,
+                                        parse_parameters, run)
 
 test = systems.AlanineDipeptideImplicit()  # test system
 temperature = 298 * unit.kelvin
@@ -42,22 +42,6 @@ if verbose_module:
     logging.getLogger(verbose_module).setLevel(logging.DEBUG)
 
 if __name__ == '__main__':
-    try:
-        sampler = sampler_class.from_storage(storage=str(ms_container))
-    except FileNotFoundError:
-        # sampler = initialize_sampler(prms)
-
-        sampler = initialize_sampler(test, sampler_class, timestep,
-                                     state_update_steps,
-                                     reference_thermodynamic_state,
-                                     thermodynamic_states, pressure,
-                                     checkpoint_iterations, ms_container)
-        sampler.metadata.update(metadata)
-
     args = parse_command_line_args()
-    n_iterations = args['n_iterations']
-    n_equilibration = args['equilibration']
-    if n_equilibration > 0:
-        sampler.equilibrate(n_equilibration)
-    if n_iterations > 0:
-        sampler.extend(n_iterations)
+    parameters = parse_parameters(dict(**locals()))
+    run(args, parameters)
