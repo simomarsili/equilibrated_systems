@@ -17,28 +17,6 @@ from equilibrated_systems.utils import (parse_command_line_args,
                                         parse_parameters, run)
 
 
-class AlanineDipeptideDimer(SystemMixin, testsystems.TestSystem):
-    """Alanine dipeptide + LJ particle."""
-    def __init__(self, constraints=mm.app.HBonds, hydrogenMass=None, **kwargs):
-
-        testsystems.TestSystem.__init__(self, **kwargs)
-
-        pdb = mm.app.PDBFile(
-            '/media/data/scr/equilibrated_systems/equilibrated_systems/'
-            'bi_dialanine/input.pdb')
-        topology = pdb.topology
-        positions = pdb.positions
-
-        forcefield = mm.app.ForceField('amber99sb.xml', 'tip3p.xml')
-        system = forcefield.createSystem(pdb.topology,
-                                         constraints=constraints,
-                                         nonbondedCutoff=1 * unit.nanometer,
-                                         hydrogenMass=hydrogenMass)
-
-        self.system, self.positions, self.topology = (system, positions,
-                                                      topology)
-
-
 class FromPDB(SystemMixin, testsystems.TestSystem):
     """Create a test system from a PDB file."""
     def __init__(self, pdb, xml=('amber99sb.xml', 'tip3p.xml'), **kwargs):
@@ -62,6 +40,7 @@ class FromPDB(SystemMixin, testsystems.TestSystem):
                                                       topology)
 
 
+#test = FromPDB(pdb='./input.pdb', implicitSolvent=mm.app.OBC1)  # test system
 test = FromPDB(pdb='./input.pdb')  # test system
 
 temperature = 298 * unit.kelvin
@@ -71,6 +50,7 @@ sampler_class = ReplicaExchangeSampler
 timestep = 2.0 * unit.femtoseconds
 state_update_steps = 1000  # stride in steps between state update (#steps)
 checkpoint_iterations = 1  # checkpoint_interval (#iterations)
+platform = 'CUDA'
 
 protocol = dict(  # define the scaling protocol as a dict
     lambda_torsions=list(np.logspace(0, -1, 4)))
