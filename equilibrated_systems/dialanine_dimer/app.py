@@ -34,57 +34,35 @@ class AlanineDipeptideDimer(SystemMixin, testsystems.TestSystem):
                                          constraints=constraints,
                                          nonbondedCutoff=1 * unit.nanometer,
                                          hydrogenMass=hydrogenMass)
-        '''
-        prmtop_filename = testsystems.get_data_filename(
-            "data/alanine-dipeptide-gbsa/alanine-dipeptide.prmtop")
-        crd_filename = testsystems.get_data_filename(
-            "data/alanine-dipeptide-gbsa/alanine-dipeptide.crd")
-        prmtop = mm.app.AmberPrmtopFile(prmtop_filename)
-
-
-        system = prmtop.createSystem(implicitSolvent=None,
-                                     constraints=constraints,
-                                     nonbondedCutoff=None,
-                                     hydrogenMass=hydrogenMass)
-
-        # Extract topology
-        topology = prmtop.topology
-
-        # Read positions.
-        inpcrd = mm.app.AmberInpcrdFile(crd_filename)
-        positions = inpcrd.getPositions(asNumpy=True)
-
-        # add a LJ particle to the topology
-        chain = topology.addChain()  # add a chain
-        residue = topology.addResidue('Lig', chain)  # add a 'Ligand' residue
-        element = mm.app.Element.getBySymbol('Ar')
-        topology.addAtom('Ar', element, residue)  # add an atom
-
-        # add particle coordinates to positions
-        coord = np.array([0., 0., 0.]).reshape((1, 3))
-        positions = np.append(positions._value, coord, axis=0) * positions.unit
-
-        # add forces to system
-        for k in range(system.getNumForces()):
-            nbforce = system.getForce(k)
-            if isinstance(nbforce, mm.openmm.NonbondedForce):
-                break
-        print(type(nbforce))
-        mass = 39.9 * unit.amu
-        charge = 0.0 * unit.elementary_charge
-        sigma = 3.350 * unit.angstrom
-        epsilon = 10.0 * unit.kilocalories_per_mole
-        system.addParticle(mass)
-        nbforce.addParticle(charge, sigma, epsilon)
-        '''
-
-        # print(type(system), type(nbforce))
 
         self.system, self.positions, self.topology = (system, positions,
                                                       topology)
 
 
-test = AlanineDipeptideDimer()  # test system
+class FromPDB(SystemMixin, testsystems.TestSystem):
+    """Create a test system from a PDB file."""
+    def __init__(self, pdb, xml=('amber99sb.xml', 'tip3p.xml'), **kwargs):
+
+        testsystems.TestSystem.__init__(self, **kwargs)
+
+        defaults = dict(constraints=mm.app.HBonds,
+                        nonbondedCutoff=1.0 * unit.nanometer)
+
+        pdb = mm.app.PDBFile(pdb)
+        topology = pdb.topology
+        positions = pdb.positions
+        forcefield = mm.app.ForceField(*xml)
+
+        # filter kwargs that are compatible with createSystem signature
+        create_system_kwargs = testsystems.handle_kwargs(
+            forcefield.createSystem, defaults, kwargs)
+        system = forcefield.createSystem(pdb.topology, **create_system_kwargs)
+
+        self.system, self.positions, self.topology = (system, positions,
+                                                      topology)
+
+
+test = FromPDB(pdb='./input.pdb')  # test system
 
 temperature = 298 * unit.kelvin
 pressure = None
