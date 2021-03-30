@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import openmmtools as mmtools
 import simtk.openmm as mm
+from mmlite.matrix import Topography
 from mmlite.multistate import ReplicaExchangeSampler, create_compound_states
 from mmlite.system import SystemMixin
 from openmmtools import testsystems
@@ -39,8 +40,12 @@ class FromPDB(SystemMixin, testsystems.TestSystem):
         self.system, self.positions, self.topology = (system, positions,
                                                       topology)
 
+        self.topology = Topography(self.topology, ligand_atoms='resi 0 1 2')
+        # self.topology['ligand'] = 'resi 0 1 2'
+        # self.topology['receptor'] = 'resi 3 4 5'
 
-#test = FromPDB(pdb='./input.pdb', implicitSolvent=mm.app.OBC1)  # test system
+
+# test = FromPDB(pdb='./input.pdb', implicitSolvent=mm.app.OBC1)  # test system
 test = FromPDB(pdb='./input.pdb')  # test system
 
 temperature = 298 * unit.kelvin
@@ -55,13 +60,16 @@ platform = 'CUDA'
 protocol = dict(  # define the scaling protocol as a dict
     lambda_torsions=list(np.logspace(0, -1, 4)))
 ref_state_index = 0
+alchemical_region = 'ligand'
 
 reference_thermodynamic_state = mmtools.states.ThermodynamicState(
     system=test.system, temperature=temperature, pressure=pressure)
 thermodynamic_states = create_compound_states(reference_thermodynamic_state,
                                               test.topology,
                                               protocol,
-                                              region='default')
+                                              region=alchemical_region,
+                                              set_restraint=True)
+
 metadata = create_compound_states.metadata
 
 ms_container = Path('frames/trj.nc')  # trajectory filepath
