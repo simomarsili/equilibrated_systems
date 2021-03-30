@@ -35,12 +35,16 @@ def parse_parameters(a):
         'reference_thermodynamic_state thermodynamic_states '
         'metadata ms_container').split()
 
+    defaults = dict(platform='CUDA')
+
     prms = {}
     for p in mandatory_parameters:
         try:
             prms[p] = a.pop(p)
         except KeyError as e:
             raise ValueError('Need a value for %s' % p) from e
+    for key, val in defaults.items():
+        prms[key] = a.get(key, val)
     return prms
 
 
@@ -56,6 +60,8 @@ def initialize_sampler(**kwargs):
     state_update_steps : int
         Len of an iteration (in time steps).
         States are updated at each iteration.
+    platform : string
+        Valid values are: 'Reference', 'CPU', 'CUDA', 'OpenGL'
     reference_thermodynamic_state
     thermodynamic_states
     pressure : Quantity or None
@@ -77,7 +83,8 @@ def initialize_sampler(**kwargs):
     smp = prms.sampler_class(number_of_iterations=0,
                              mcmc_moves=propagator(
                                  timestep=prms.timestep,
-                                 n_steps=prms.state_update_steps),
+                                 n_steps=prms.state_update_steps,
+                                 platform=prms.platform),
                              online_analysis_interval=None)
 
     # set sampler states and positions
