@@ -35,7 +35,7 @@ def parse_parameters(a):
         'reference_thermodynamic_state thermodynamic_states '
         'metadata ms_container').split()
 
-    defaults = dict(platform='CUDA')
+    defaults = dict(platform='CUDA', ligand=None)
 
     prms = {}
     for p in mandatory_parameters:
@@ -64,6 +64,7 @@ def initialize_sampler(**kwargs):
         Valid values are: 'Reference', 'CPU', 'CUDA', 'OpenGL'
     reference_thermodynamic_state
     thermodynamic_states
+    metadata
     pressure : Quantity or None
     checkpoint_iterations : int
         Stride for checkpoint print (in iterations)
@@ -93,7 +94,8 @@ def initialize_sampler(**kwargs):
                         thermodynamic_states=prms.thermodynamic_states,
                         pressure=prms.pressure,
                         stride=prms.checkpoint_iterations,
-                        storage=prms.ms_container)
+                        storage=prms.ms_container,
+                        metadata=prms.metadata)
 
     smp.minimize()
 
