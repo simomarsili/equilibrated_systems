@@ -29,7 +29,7 @@ platform = 'CUDA'
 protocol = dict(  # define the scaling protocol as a dict
     lambda_torsions=list(np.logspace(0, -1, 4)))
 ref_state_index = 0  # the index of the target thermodynamic state
-alchemical_region = 'ligand'
+alchemical_region = 'resname B2'
 # restraint = False
 restraint = 2.0 * unit.kilojoule_per_mole / unit.angstrom**2
 
