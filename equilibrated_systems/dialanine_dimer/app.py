@@ -61,6 +61,8 @@ protocol = dict(  # define the scaling protocol as a dict
     lambda_torsions=list(np.logspace(0, -1, 4)))
 ref_state_index = 0
 alchemical_region = 'ligand'
+# restraint = False
+restraint = 2.0 * unit.kilojoule_per_mole / unit.angstrom**2
 
 reference_thermodynamic_state = mmtools.states.ThermodynamicState(
     system=test.system, temperature=temperature, pressure=pressure)
@@ -68,7 +70,7 @@ thermodynamic_states = create_compound_states(reference_thermodynamic_state,
                                               test.topology,
                                               protocol,
                                               region=alchemical_region,
-                                              set_restraint=True)
+                                              restraint=restraint)
 
 metadata = create_compound_states.metadata
 
